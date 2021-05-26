@@ -1,12 +1,13 @@
 import logging
+import os
 
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-
+import pickle
 from ann_training import model_creation_3D, model_creation_2D, model_creation_MLP_2D, model_creation_MLP_3D
-from inversion_util import invert_MLP_3D, invert_MLP_2D
+from inversion_util import invert_MLP_WLK_2D, invert_MLP_GA_2D
 from plotting import plot_2D, plot_3D, plot_inversion_3D, plot_inversion_2D
 from quadratic_polynomial import QuadraticPolynomial
 
@@ -14,15 +15,35 @@ logger = logging.getLogger("exp_logger")
 
 
 def main():
-    X_test, model, y_test = pipeline_MLP_2D()
-    plot_2D(model, X_test, y_test)
-    quadratic, model, quad_X_test, quad_Y_test, quad_Z_test = pipeline_MLP_3D()
-    plot_3D(quadratic, model, quad_X_test, quad_Y_test, quad_Z_test)
-    # invert_MLP_2D('GA', y_test[0])
+    if not os.path.exists('mlpmodel'):
+        X_test, model, y_test = pipeline_MLP_2D()
+        plot_2D(model, X_test, y_test)
+        pickle.dump((X_test, model, y_test), open('mlpmodel',"wb"))
+    else:
+        X_test, model, y_test = pickle.load(open('mlpmodel', 'rb'))
+        plot_2D(model, X_test, y_test)
+
+    y_test=y_test.reset_index()["z"]
+    X_test=X_test.reset_index()[["x", "y"]]
+
+    if not os.path.exists('ga_inv_value'):
+        ga_inv_value=invert_MLP_GA_2D(y_test[0], model)
+        pickle.dump((ga_inv_value,y_test[0]), open('ga_inv_value', 'wb'))
+    else:
+        ga_inv_value=pickle.load(open('ga_inv_value', 'rb'))
+    print(ga_inv_value[0][0], np.array(X_test)[0])
+    if not os.path.exists('wlk_inv_value'):
+        wlk_inv_value=invert_MLP_WLK_2D( y_test[0], model)
+        pickle.dump((ga_inv_value,y_test[0]), open('wlk_inv_value', 'wb'))
+    else:
+        wlk_inv_value=pickle.load(open('wlk_inv_value', 'rb'))
+    print(wlk_inv_value[0][0], np.array(X_test)[0])
     # invert_MLP_3D('WLK', quad_Y_test[0])
-    # plot_inversion_2D()
+    #plot_inversion_2D()
     # plot_inversion_3D()
     return model
+
+
 
 
 def pipeline_MLP_3D():
