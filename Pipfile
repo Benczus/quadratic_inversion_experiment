@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+pandas = "*"
+scikit-learn = "*"
+deap = "*"
+matplotlib = "*"
+sklearn_export = "*"
+tensorflow = "*"
+
+[dev-packages]
+pylint = "*"
+coverage = "*"
+
+[requires]
+python_version = "3.8"
+
+[packages.inversion]
+git = "https://github.com/Benczus/inversion_api"
+editable = true
