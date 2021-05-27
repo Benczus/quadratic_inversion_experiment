@@ -50,14 +50,14 @@ def average_xy_positions(inverted_positions, selected_features):
             np.average(gen_y_coord[gen_y_coord < np.max(selected_features["pos_y"])]))
 
 
-def invert_MLP_WLK_2D(value, regressor):
+def invert_MLP_WLK_2D(value, regressor, bounds):
     print("Inverting with WLK!")
-    inverter = inversion.WLKMLPInverter(2, 0.5, regressor)
+    inverter = inversion.WLKMLPInverter(2, 0.5, regressor, bounds=bounds)
     return inverter.invert(value)
 
-def invert_MLP_GA_2D(value, regressor):
+def invert_MLP_GA_2D(value, regressor, bounds):
     print("Inverting with GA!")
-    inverter = inversion.GAMLPInverter(regressor, )
+    inverter = inversion.GAMLPInverter(regressor, bounds)
     return inverter.invert(value)
 
 

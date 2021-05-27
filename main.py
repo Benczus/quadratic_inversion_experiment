@@ -15,36 +15,69 @@ logger = logging.getLogger("exp_logger")
 
 
 def main():
-    if not os.path.exists('mlpmodel'):
-        X_test, model, y_test = pipeline_MLP_2D()
-        plot_2D(model, X_test, y_test)
-        pickle.dump((X_test, model, y_test), open('mlpmodel',"wb"))
-    else:
-        X_test, model, y_test = pickle.load(open('mlpmodel', 'rb'))
-        plot_2D(model, X_test, y_test)
 
-    y_test=y_test.reset_index()["z"]
-    X_test=X_test.reset_index()[["x", "y"]]
+    ga_inv_value_2D, wlk_inv_value_2D=inversion_2D()
 
-    if not os.path.exists('ga_inv_value'):
-        ga_inv_value=invert_MLP_GA_2D(y_test[0], model)
-        pickle.dump((ga_inv_value,y_test[0]), open('ga_inv_value', 'wb'))
+    if not os.path.exists('mlpmodel3D'):
+        X_test, model, y_test = pipeline_MLP_3D()
+        # plot_2D(model, X_test, y_test)
+        pickle.dump((X_test, model, y_test), open('mlpmodel3D',"wb"))
     else:
-        ga_inv_value=pickle.load(open('ga_inv_value', 'rb'))
-    print(ga_inv_value[0][0], np.array(X_test)[0])
-    if not os.path.exists('wlk_inv_value'):
-        wlk_inv_value=invert_MLP_WLK_2D( y_test[0], model)
-        pickle.dump((ga_inv_value,y_test[0]), open('wlk_inv_value', 'wb'))
-    else:
-        wlk_inv_value=pickle.load(open('wlk_inv_value', 'rb'))
+        X_test, model, y_test = pickle.load(open('mlpmodel3D', 'rb'))
+        # plot_2D(model, X_test, y_test)
+    bounds = (np.array([X_test['x'].min]), np.array([X_test['x'].max]))
+    ga_inv_value, wlk_inv_value = inversion_3D(bounds, model, y_test)
     print(wlk_inv_value[0][0], np.array(X_test)[0])
-    # invert_MLP_3D('WLK', quad_Y_test[0])
-    #plot_inversion_2D()
-    # plot_inversion_3D()
+    print(ga_inv_value[0][0], np.array(X_test)[0])
+
     return model
 
 
+def inversion_2D():
+    if not os.path.exists('mlpmodel'):
+        X_test, model, y_test = pipeline_MLP_2D()
+        # plot_2D(model, X_test, y_test)
+        pickle.dump((X_test, model, y_test), open('mlpmodel', "wb"))
+    else:
+        X_test, model, y_test = pickle.load(open('mlpmodel', 'rb'))
+        # plot_2D(model, X_test, y_test)
+    y_test = y_test.reset_index()["z"]
+    X_test = X_test.reset_index()[["x", "y"]]
+    bounds = (np.array([X_test['x'].min]), np.array([X_test['x'].max]))
+    ga_inv_value, wlk_inv_value = invert_2D(bounds, model, y_test)
+    print(wlk_inv_value[0][0], np.array(X_test)[0])
+    print(ga_inv_value[0][0], np.array(X_test)[0])
+    plot_inversion_2D(model, wlk_inv_value[0][0], X_test, y_test)
+    return ga_inv_value, wlk_inv_value
 
+
+def invert_2D(bounds, model, y_test):
+    if not os.path.exists('ga_inv_value'):
+        ga_inv_value = invert_MLP_GA_2D(y_test[0], model, bounds=bounds)
+        pickle.dump((ga_inv_value, y_test[0]), open('ga_inv_value', 'wb'))
+    else:
+        ga_inv_value = pickle.load(open('ga_inv_value', 'rb'))
+
+    if not os.path.exists('wlk_inv_value'):
+        wlk_inv_value = invert_MLP_WLK_2D(y_test[0], model, bounds=bounds)
+        pickle.dump((ga_inv_value, y_test[0]), open('wlk_inv_value', 'wb'))
+    else:
+        wlk_inv_value = pickle.load(open('wlk_inv_value', 'rb'))
+    return  ga_inv_value,wlk_inv_value
+
+def inversion_3D(X_test, bounds, model, y_test):
+    if not os.path.exists('ga_inv_value'):
+        ga_inv_value = invert_MLP_GA_2D(y_test[0], model, bounds=bounds)
+        pickle.dump((ga_inv_value, y_test[0]), open('ga_inv_value', 'wb'))
+    else:
+        ga_inv_value = pickle.load(open('ga_inv_value', 'rb'))
+
+    if not os.path.exists('wlk_inv_value'):
+        wlk_inv_value = invert_MLP_WLK_2D(y_test[0], model, bounds=bounds)
+        pickle.dump((ga_inv_value, y_test[0]), open('wlk_inv_value', 'wb'))
+    else:
+        wlk_inv_value = pickle.load(open('wlk_inv_value', 'rb'))
+    return  ga_inv_value,wlk_inv_value
 
 def pipeline_MLP_3D():
     quadratic = QuadraticPolynomial(1, 1, 2)

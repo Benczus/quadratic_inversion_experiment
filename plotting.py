@@ -22,8 +22,13 @@ def plot_3D(quadratic: QuadraticPolynomial, model: Model, quad_X_test, quad_Y_te
     return
 
 
-def plot_inversion_2D(type: Str, regressor: MLPRegressor):
-    pass
+def plot_inversion_2D(regressor,inv_value, X, y):
+    plt.plot(X['x'], y)
+    plt.scatter(inv_value, (a:=regressor.predict(np.array(inv_value).reshape(1,-1)), -a))
+    plt.plot((inv_value[1],X['x'][0]), (-(regressor.predict(np.array(inv_value).reshape(1, -1))), y[0]))
+    plt.plot((inv_value[0], -X['x'][0]), ((regressor.predict(np.array(inv_value).reshape(1, -1))), y[0]))
+    plt.show()
+    return
 
 
 def plot_inversion_3D():
