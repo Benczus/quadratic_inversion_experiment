@@ -55,11 +55,20 @@ def invert_MLP_WLK_2D(value, regressor, bounds):
     inverter = inversion.WLKMLPInverter(2, 0.5, regressor, bounds=bounds)
     return inverter.invert(value)
 
+def invert_MLP_WLK_3D(value, regressor, bounds):
+    print("Inverting with WLK!")
+    inverter = inversion.WLKMLPInverter(800, 0.5, regressor, bounds=bounds)
+    return inverter.invert(value)
+
 def invert_MLP_GA_2D(value, regressor, bounds):
     print("Inverting with GA!")
     inverter = inversion.GAMLPInverter(regressor, bounds)
     return inverter.invert(value)
 
+def invert_MLP_GA_3D(value, regressor, bounds):
+    print("Inverting with GA!")
+    inverter = inversion.GAMLPInverter(regressor, bounds)
+    return inverter.invert(value)
 
 def invert_MLP_3D(inv_type, value, regressor):
     if inv_type == 'WLK':

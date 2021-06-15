@@ -31,5 +31,6 @@ def plot_inversion_2D(regressor,inv_value, X, y):
     return
 
 
-def plot_inversion_3D():
+def plot_inversion_3D(regressor, inv_value, X, y):
+
     pass
