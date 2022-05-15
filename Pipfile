@@ -16,9 +16,9 @@ tensorflow = "*"
 pylint = "*"
 coverage = "*"
 
-[requires]
-python_version = "3.8"
+#[requires]
+#python_version = "3.8"
 
-[packages.inversion]
+[packages.anninverter]
 git = "https://github.com/Benczus/inversion_api"
 editable = true

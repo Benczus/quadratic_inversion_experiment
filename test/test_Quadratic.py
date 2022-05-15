@@ -2,11 +2,11 @@ import os
 import unittest
 
 import numpy as np
-from quadratic_experiment.quadratic_polynomial import QuadraticPolynomial
+
+from quadratic_polynomial import QuadraticPolynomial
 
 
 class QuadraticFunctionTests(unittest.TestCase):
-
     def test_quadratic_calculate(self):
         p = QuadraticPolynomial(4, 1, 2)
         self.assertEqual(p.calculate(0), 2)
@@ -17,7 +17,9 @@ class QuadraticFunctionTests(unittest.TestCase):
 
     def test_generate_quadratic_data(self):
         p = QuadraticPolynomial(4, 1, 2)
-        num_of_rows = 1000
+        num_of_rows = 2000
         p.generate_quadratic_data(num_of_rows)
         p.save_surface()
-        self.assertEqual(True, os.path.isfile(os.pardir + f'/data/quadratic_{num_of_rows}.csv'))
+        self.assertEqual(
+            True, os.path.isfile(os.pardir + f"/data/quadratic_{num_of_rows}.csv")
+        )
