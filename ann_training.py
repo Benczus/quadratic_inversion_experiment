@@ -91,7 +91,7 @@ def model_creation_MLP_2D(
     return best_reg, best_reg.score(X_test, y_test)
 
 
-def model_creation_MLP_3D(
+def model_creation_ga_MLP_3D(
     neuron_config, activation_config, X_train, X_test, y_train, y_test
 ):
     cv = get_default_model_MLP_2D(activation_config, neuron_config)
