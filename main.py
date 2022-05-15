@@ -28,7 +28,7 @@ def inversion_wlk_2D(bounds, model, quad_Z_test):
     y_test = y_test.reset_index()["z"]
     X_test = X_test.reset_index()[["x", "y"]]
     bounds = (np.array([X_test["x"].min]), np.array([X_test["x"].max]))
-    ga_inv_value, wlk_inv_value = invert_2D(bounds, model, y_test)
+    ga_inv_value, wlk_inv_value = invert_ga_2D(bounds, model, y_test)
     print(wlk_inv_value[0][0], np.array(X_test)[0])
     print(ga_inv_value[0][0], np.array(X_test)[0])
     plot_inversion_2D(model, wlk_inv_value[0][0], X_test, y_test)
@@ -67,7 +67,7 @@ def main_ga_2D():
 
 def main_ga_3D():
     if not os.path.exists("mlpmodel3D"):
-        quadratic, model, quad_X_test, quad_Y_test, quad_Z_test = pipeline_MLP_3D()
+        quadratic, model, quad_X_test, quad_Y_test, quad_Z_test = pipeline_ga_MLP_3D()
         pickle.dump(
             (model, quad_X_test, quad_Y_test, quad_Z_test), open("mlpmodel3D", "wb")
         )
@@ -84,31 +84,22 @@ def main_ga_3D():
 
 
 def inversion_ga_2D(bounds, model, y_test):
-    # if not os.path.exists("mlpmodel"):
-    #     X_test, model, y_test = pipeline_MLP_2D()
-    #     # plot_2D(model, X_test, y_test)
-    #     pickle.dump((X_test, model, y_test), open("mlpmodel", "wb"))
-    # else:
-    #     X_test, model, y_test = pickle.load(open("mlpmodel", "rb"))
-    #     # plot_2D(model, X_test, y_test)
 
-    ga_inv_value, wlk_inv_value = invert_2D(bounds, model, y_test)
+    ga_inv_value, wlk_inv_value = invert_ga_2D(bounds, model, y_test)
 
     return ga_inv_value, wlk_inv_value
 
 
-def invert_2D(bounds, model, y_test):
-    if not os.path.exists("ga_inv_value"):
-        ga_inv_value = invert_MLP_GA_2D(y_test[0], model, bounds=bounds)
-        pickle.dump((ga_inv_value, y_test[0]), open("ga_inv_value", "wb"))
-    else:
-        ga_inv_value = pickle.load(open("ga_inv_value", "rb"))
+def invert_wlk_2D(bounds, model, y_test):
+    ga_inv_value, wlk_inv_value = invert_MLP_WLK_2D(bounds, model, y_test)
 
-    if not os.path.exists("wlk_inv_value"):
-        wlk_inv_value = invert_MLP_WLK_2D(y_test[0], model, bounds=bounds)
-        pickle.dump((ga_inv_value, y_test[0]), open("wlk_inv_value", "wb"))
-    else:
-        wlk_inv_value = pickle.load(open("wlk_inv_value", "rb"))
+    return ga_inv_value, wlk_inv_value
+
+
+def invert_ga_2D(bounds, model, y_test):
+
+    ga_inv_value, wlk_inv_value = invert_MLP_GA_2D(bounds, model, y_test)
+
     return ga_inv_value, wlk_inv_value
 
 
