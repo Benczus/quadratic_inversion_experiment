@@ -98,7 +98,7 @@ def invert_wlk_2D(bounds, model, y_test):
 
 def invert_ga_2D(bounds, model, y_test):
 
-    ga_inv_value, wlk_inv_value = invert_MLP_GA_2D(bounds, model, y_test)
+    ga_inv_value, wlk_inv_value = invert_MLP_GA_2D(y_test, model, bounds)
 
     return ga_inv_value, wlk_inv_value
 
