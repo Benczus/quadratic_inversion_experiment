@@ -28,7 +28,7 @@ def inversion_wlk_2D(bounds, model, quad_Z_test):
     y_test = y_test.reset_index()["z"]
     X_test = X_test.reset_index()[["x", "y"]]
     bounds = (np.array([X_test["x"].min]), np.array([X_test["x"].max]))
-    ga_inv_value, wlk_inv_value = invert_ga_2D(bounds, model, y_test)
+    ga_inv_value= invert_ga_2D(bounds, model, y_test)
     print(wlk_inv_value[0][0], np.array(X_test)[0])
     print(ga_inv_value[0][0], np.array(X_test)[0])
     plot_inversion_2D(model, wlk_inv_value[0][0], X_test, y_test)
@@ -58,9 +58,8 @@ def main_ga_2D():
         X_test, model, y_test = pickle.load(open("mlpmodel2D", "rb"))
     bounds = (np.array([X_test["x"].min]), np.array([X_test["x"].max]))
     ga_inv_value, wlk_inv_value = inversion_ga_2D(bounds, model, y_test)
-    print(wlk_inv_value[0][0], np.array(X_test)[0])
     print(ga_inv_value[0][0], np.array(X_test)[0])
-    plot_inversion_2D(model, wlk_inv_value[0][0], X_test, y_test)
+    plot_inversion_2D(model, ga_inv_value[0][0], X_test, y_test)
 
     return model, X_test, wlk_inv_value, ga_inv_value
 
@@ -85,9 +84,9 @@ def main_ga_3D():
 
 def inversion_ga_2D(bounds, model, y_test):
 
-    ga_inv_value, wlk_inv_value = invert_ga_2D(bounds, model, y_test)
+    ga_inv_value = invert_ga_2D(bounds, model, y_test)
 
-    return ga_inv_value, wlk_inv_value
+    return ga_inv_value
 
 
 def invert_wlk_2D(bounds, model, y_test):
@@ -98,9 +97,9 @@ def invert_wlk_2D(bounds, model, y_test):
 
 def invert_ga_2D(bounds, model, y_test):
 
-    ga_inv_value, wlk_inv_value = invert_MLP_GA_2D(y_test, model, bounds)
+    ga_inv_value = invert_MLP_GA_2D(y_test, model, bounds)
 
-    return ga_inv_value, wlk_inv_value
+    return ga_inv_value
 
 
 def inversion_3D(bounds, model, y_test):
