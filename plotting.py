@@ -26,8 +26,9 @@ def plot_3D(
 
 def plot_inversion_2D(regressor, inv_value, X, y):
     plt.plot(X["x"], y)
+    #tuple((x,y) for x,y in zip(regressor.predict(np.array(inv_value)).reshape(1, -1),(-1)*regressor.predict(np.array(inv_value)).reshape(1, -1)))
     plt.scatter(
-        inv_value, (a := regressor.predict(np.array(inv_value).reshape(1, -1)), -a)
+        inv_value, (a := regressor.predict(np.array(inv_value[0]).reshape(1,-1)), -a)
     )
     plt.plot(
         (inv_value[1], X["x"][0]),

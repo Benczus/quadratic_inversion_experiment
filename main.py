@@ -58,7 +58,7 @@ def main_ga_2D():
     bounds = (np.array([X_test["x"].min]), np.array([X_test["x"].max]))
     ga_inv_value = inversion_ga_2D(bounds, model, y_test)
     print(ga_inv_value[0][0], np.array(X_test)[0])
-    plot_inversion_2D(model, ga_inv_value[0][0], X_test, y_test)
+    plot_inversion_2D(model, ga_inv_value, X_test, y_test)
 
     return model, X_test, ga_inv_value
 
