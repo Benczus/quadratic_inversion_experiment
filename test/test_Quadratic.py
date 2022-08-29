@@ -17,7 +17,7 @@ class QuadraticFunctionTests(unittest.TestCase):
 
     def test_generate_quadratic_data(self):
         p = QuadraticPolynomial(4, 1, 2)
-        num_of_rows = 2000
+        num_of_rows = 200
         p.generate_quadratic_data(num_of_rows)
         p.save_surface()
         self.assertEqual(

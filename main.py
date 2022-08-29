@@ -18,6 +18,11 @@ logger = logging.getLogger("exp_logger")
 
 
 def inversion_wlk_2D(bounds, model, quad_Z_test):
+    p = QuadraticPolynomial(4, 1, 2)
+    num_of_rows = 200
+    if not os.path.isfile(os.pardir + f"/data/quadratic_{num_of_rows}.csv"):
+        p.generate_quadratic_data(num_of_rows)
+        p.save_surface()
     if not os.path.exists("mlpmodel"):
         X_test, model, y_test = pipeline_MLP_2D()
         # plot_2D(model, X_test, y_test)
@@ -35,6 +40,11 @@ def inversion_wlk_2D(bounds, model, quad_Z_test):
 
 
 def main_wlk():
+    p = QuadraticPolynomial(4, 1, 2)
+    num_of_rows = 200
+    if not os.path.isfile(os.pardir + f"/data/quadratic_{num_of_rows}.csv"):
+        p.generate_quadratic_data(num_of_rows)
+        p.save_surface()
     if not os.path.exists("mlpmodel2D"):
         quadratic, model, quad_X_test, quad_Y_test, quad_Z_test = pipeline_MLP_2D()
         pickle.dump(
@@ -49,16 +59,24 @@ def main_wlk():
 
 
 def main_ga_2D():
-
+    p = QuadraticPolynomial(4, 1, 2)
+    num_of_rows = 200
+    if not os.path.isfile(os.pardir + f"/data/quadratic_{num_of_rows}.csv"):
+        p.generate_quadratic_data(num_of_rows)
+        p.save_surface()
     if not os.path.exists("mlpmodel2D"):
-        X_test, model, y_test = pipeline_MLP_2D()
+        X_test, model, y_test = pipeline_MLP_2D(num_of_rows)
         pickle.dump((X_test, model, y_test), open("mlpmodel2D", "wb"))
     else:
         X_test, model, y_test = pickle.load(open("mlpmodel2D", "rb"))
     bounds = (np.array([X_test["x"].min]), np.array([X_test["x"].max]))
-    ga_inv_value = inversion_ga_2D(bounds, model, y_test)
+    if not os.path.exists("ga_inv_value_2D_100"):
+        ga_inv_value = inversion_ga_2D(bounds, model, y_test)
+    else:
+        ga_inv_value= pickle.load(open("ga_inv_value_2D_100", "rb"))
+
     print(ga_inv_value[0][0], np.array(X_test)[0])
-    plot_inversion_2D(model, ga_inv_value, X_test, y_test)
+    plot_inversion_2D(model, ga_inv_value[0], X_test, y_test)
 
     return model, X_test, ga_inv_value
 
@@ -97,7 +115,9 @@ def invert_wlk_2D(bounds, model, y_test):
 def invert_ga_2D(bounds, model, y_test):
 
     ga_inv_value = invert_MLP_GA_2D(y_test, model, bounds)
-
+    pickle.dump(
+        ga_inv_value, open(f"ga_inv_value_2D_{len(ga_inv_value)}", "wb")
+    )
     return ga_inv_value
 
 
@@ -139,8 +159,8 @@ def pipeline_ga_MLP_3D():
     return quadratic, model, quad_X_test, quad_Y_test, quad_Z_test
 
 
-def pipeline_MLP_2D():
-    num_of_rows = 2000
+def pipeline_MLP_2D(num_of_rows):
+
     df = pd.read_csv(f"data/quadratic_{num_of_rows}", index_col=0)
     # df = scale_dataset(df)
     X = df[["x", "y"]]
@@ -211,4 +231,4 @@ def scale_dataset(df):
 
 
 if __name__ == "__main__":
-    model, quad_x, inv, ga_inv = main_ga_2D()
+    model, quad_x, ga_inv = main_ga_2D()
