@@ -23,7 +23,17 @@ class QuadraticPolynomial:
         )
         return a.roots()
 
-    def generate_quadratic_data(self, num_of_rows=1000, lower_b=-100, upper_b=100):
+    def generate_quadratic_data_2D(self, num_of_rows=1000, lower_b=-100, upper_b=100):
+        range = upper_b - lower_b
+        x = np.random.rand(num_of_rows, 1) * range + lower_b
+        x.sort(axis=0)
+        # X, Y = np.meshgrid(x, y)
+        y = self.calculate(np.sqrt(x ** 2 ))
+        self.x, self.y = x, y
+        self.num_of_rows = num_of_rows
+        return x,y
+
+    def generate_quadratic_data_3D(self, num_of_rows=1000, lower_b=-100, upper_b=100):
         range = upper_b - lower_b
         x = np.random.rand(num_of_rows, 1) * range + lower_b
         y = np.random.rand(num_of_rows, 1) * range + lower_b
@@ -35,12 +45,41 @@ class QuadraticPolynomial:
         self.num_of_rows = num_of_rows
         return X, Y, Z
 
-    def save_surface(
+    def save_surface_2D(
         self,
     ):
         df = pd.DataFrame(
             data={
                 "x": self.X.diagonal(),
+                "y": self.Y.diagonal(),
+                "z": self.Z.diagonal(),
+            }
+        )
+        df.to_csv(
+            os.path.dirname(os.path.abspath(__file__))
+            + f"/data/quadratic_{self.num_of_rows}"
+        )
+
+    def save_surface_2D(
+        self,
+    ):
+        df = pd.DataFrame(
+            data={
+                "x": self.x.diagonal(),
+                "y": self.y.diagonal(),
+            }
+        )
+        df.to_csv(
+            os.path.dirname(os.path.abspath(__file__))
+            + f"/data/quadratic_{self.num_of_rows}_2D"
+        )
+
+    def save_surface_3D(
+        self,
+    ):
+        df = pd.DataFrame(
+            data={
+                "x": self.x.diagonal(),
                 "y": self.Y.diagonal(),
                 "z": self.Z.diagonal(),
             }

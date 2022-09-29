@@ -44,8 +44,8 @@ def main_wlk():
 def main_ga_2D():
     p = QuadraticPolynomial(4, 1, 2)
     num_of_rows = 200
-    if not os.path.isfile(os.pardir + f"/data/quadratic_{num_of_rows}.csv"):
-        p.generate_quadratic_data(num_of_rows)
+    if not os.path.isfile(os.pardir + f"/data/quadratic_{num_of_rows}_2D.csv"):
+        p.generate_quadratic_data_2D(num_of_rows)
         p.save_surface()
     if not os.path.exists("mlpmodel2D"):
         X_test, model, y_test = pipeline_MLP_2D(num_of_rows)
@@ -214,6 +214,9 @@ def scale_dataset(df):
 
 
 if __name__ == "__main__":
-    model, quad_x, wlk_inv = main_wlk()
-    main_ga_2D()
+    # model, quad_x, wlk_inv = main_wlk()
+    # main_ga_2D()
     main_ga_3D()
+
+    #TODO - kivonni a Z tengelyből a függvényértékeket -> hibák topológiája -> átlag négyzetes hibák ->
+    # TODO 2D-ben diagonális vonal  y és y kalap között mennyire diagonális
