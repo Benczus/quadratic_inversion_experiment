@@ -28,7 +28,7 @@ class QuadraticPolynomial:
         x = np.random.rand(num_of_rows, 1) * range + lower_b
         x.sort(axis=0)
         # X, Y = np.meshgrid(x, y)
-        y = self.calculate(np.sqrt(x ** 2 ))
+        y = self.calculate(x)
         self.x, self.y = x, y
         self.num_of_rows = num_of_rows
         return x,y
@@ -60,13 +60,13 @@ class QuadraticPolynomial:
             + f"/data/quadratic_{self.num_of_rows}"
         )
 
-    def save_surface_2D(
+    def save_data_2D(
         self,
     ):
         df = pd.DataFrame(
             data={
-                "x": self.x.diagonal(),
-                "y": self.y.diagonal(),
+                "x": self.x.reshape(-1),
+                "y": self.y.reshape(-1),
             }
         )
         df.to_csv(

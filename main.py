@@ -44,19 +44,19 @@ def main_wlk():
 def main_ga_2D():
     p = QuadraticPolynomial(4, 1, 2)
     num_of_rows = 200
-    if not os.path.isfile(os.pardir + f"/data/quadratic_{num_of_rows}_2D.csv"):
-        p.generate_quadratic_data_2D(num_of_rows)
-        p.save_surface()
-    if not os.path.exists("mlpmodel2D"):
-        X_test, model, y_test = pipeline_MLP_2D(num_of_rows)
-        pickle.dump((X_test, model, y_test), open("mlpmodel2D", "wb"))
-    else:
-        X_test, model, y_test = pickle.load(open("mlpmodel2D", "rb"))
-    bounds = (np.array([X_test["x"].min]), np.array([X_test["x"].max]))
-    if not os.path.exists("ga_inv_value_2D_100"):
-        ga_inv_value = inversion_ga_2D(bounds, model, y_test)
-    else:
-        ga_inv_value= pickle.load(open("ga_inv_value_2D_100", "rb"))
+    # if not os.path.isfile(os.pardir + f"/data/quadratic_{num_of_rows}_2D.csv"):
+    p.generate_quadratic_data_2D(num_of_rows)
+    p.save_data_2D()
+# if not os.path.exists("mlpmodel2D"):
+    X_test, model, y_test = pipeline_MLP_2D(num_of_rows)
+    # pickle.dump((X_test, model, y_test), open("mlpmodel2D", "wb"))
+# else:
+#     X_test, model, y_test = pickle.load(open("mlpmodel2D", "rb"))
+    bounds = (np.array([X_test["x"].min()]), np.array([X_test["x"].max()]))
+# if not os.path.exists("ga_inv_value_2D_100"):
+    ga_inv_value = inversion_ga_2D(bounds, model, y_test)
+    # else:
+    #     ga_inv_value= pickle.load(open("ga_inv_value_2D_100", "rb"))
 
     print(ga_inv_value[0][0], np.array(X_test)[0])
     plot_inversion_2D(model, ga_inv_value[0], X_test, y_test)
@@ -98,9 +98,9 @@ def invert_wlk_2D(bounds, model, y_test):
 def invert_ga_2D(bounds, model, y_test):
 
     ga_inv_value = invert_MLP_GA_2D(y_test, model, bounds)
-    pickle.dump(
-        ga_inv_value, open(f"ga_inv_value_2D_{len(ga_inv_value)}", "wb")
-    )
+    # pickle.dump(
+    #     ga_inv_value, open(f"ga_inv_value_2D_{len(ga_inv_value)}", "wb")
+    # )
     return ga_inv_value
 
 
@@ -144,10 +144,10 @@ def pipeline_ga_MLP_3D():
 
 def pipeline_MLP_2D(num_of_rows):
 
-    df = pd.read_csv(f"data/quadratic_{num_of_rows}", index_col=0)
+    df = pd.read_csv(f"data/quadratic_{num_of_rows}_2D", index_col=0)
     # df = scale_dataset(df)
-    X = df[["x", "y"]]
-    y = df["z"]
+    X = df["x"]
+    y = df["y"]
     neuron_config = [200, 400, 300, 200]
     activation_config = ["identity", "logistic", "relu", "tanh"]
     X_train, X_test, y_train, y_test = train_test_split(
@@ -197,11 +197,11 @@ def pipeline_ga_2D():
 
 
 def sort_2D_test_data(X_test, y_test):
-    df_a = pd.DataFrame(X_test, columns=["x", "y"])
-    df_a["z"] = y_test
+    df_a = pd.DataFrame(X_test, columns=["x"])
+    df_a["y"] = y_test
     df_a = df_a.sort_values(by="x")
-    X_test = df_a[["x", "y"]]
-    y_test = df_a["z"]
+    X_test = df_a[["x"]]
+    y_test = df_a["y"]
     return X_test, y_test
 
 
@@ -215,8 +215,8 @@ def scale_dataset(df):
 
 if __name__ == "__main__":
     # model, quad_x, wlk_inv = main_wlk()
-    # main_ga_2D()
-    main_ga_3D()
+    main_ga_2D()
+    # main_ga_3D()
 
     #TODO - kivonni a Z tengelyből a függvényértékeket -> hibák topológiája -> átlag négyzetes hibák ->
     # TODO 2D-ben diagonális vonal  y és y kalap között mennyire diagonális
