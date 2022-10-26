@@ -11,7 +11,7 @@ from ann_training import (model_creation_2D, model_creation_3D,
                           model_creation_ga_MLP_3D, model_creation_MLP_2D)
 from inversion_util import (invert_MLP_GA_2D, invert_MLP_GA_3D,
                             invert_MLP_WLK_2D, invert_MLP_WLK_3D)
-from plotting import plot_2D, plot_3D, plot_inversion_2D, plot_inversion_3D
+from plotting import plot_3D, plot_inversion_2D
 from quadratic_polynomial import QuadraticPolynomial
 
 logger = logging.getLogger("exp_logger")
@@ -20,8 +20,8 @@ logger = logging.getLogger("exp_logger")
 def inversion_wlk_2D(bounds, model, y_test):
     p = QuadraticPolynomial(4, 1, 2)
     num_of_rows = 200
-    wlk_inv_value= invert_wlk_2D(bounds, model, y_test)
-    return  wlk_inv_value
+    wlk_inv_value = invert_wlk_2D(bounds, model, y_test)
+    return wlk_inv_value
 
 
 def main_wlk():
@@ -47,20 +47,19 @@ def main_ga_2D():
     # if not os.path.isfile(os.pardir + f"/data/quadratic_{num_of_rows}_2D.csv"):
     p.generate_quadratic_data_2D(num_of_rows)
     p.save_data_2D()
-# if not os.path.exists("mlpmodel2D"):
+    # if not os.path.exists("mlpmodel2D"):
     X_test, model, y_test = pipeline_MLP_2D(num_of_rows)
     # pickle.dump((X_test, model, y_test), open("mlpmodel2D", "wb"))
-# else:
-#     X_test, model, y_test = pickle.load(open("mlpmodel2D", "rb"))
+    # else:
+    #     X_test, model, y_test = pickle.load(open("mlpmodel2D", "rb"))
     bounds = (np.array([X_test["x"].min()]), np.array([X_test["x"].max()]))
-# if not os.path.exists("ga_inv_value_2D_100"):
+    # if not os.path.exists("ga_inv_value_2D_100"):
     ga_inv_value = inversion_ga_2D(bounds, model, y_test)
     # else:
     #     ga_inv_value= pickle.load(open("ga_inv_value_2D_100", "rb"))
 
     print(ga_inv_value[0][0], np.array(X_test)[0])
     plot_inversion_2D(model, ga_inv_value[0], X_test, y_test)
-
     return model, X_test, ga_inv_value
 
 
@@ -68,24 +67,23 @@ def main_ga_3D():
     if not os.path.exists("mlpmodel3D"):
         quadratic, model, quad_X_test, quad_Y_test, quad_Z_test = pipeline_ga_MLP_3D()
         pickle.dump(
-            (quadratic, model, quad_X_test, quad_Y_test, quad_Z_test), open("mlpmodel3D", "wb")
+            (quadratic, model, quad_X_test, quad_Y_test, quad_Z_test),
+            open("mlpmodel3D", "wb"),
         )
     else:
-         quadratic, model, quad_X_test, quad_Y_test, quad_Z_test = pickle.load(
+        quadratic, model, quad_X_test, quad_Y_test, quad_Z_test = pickle.load(
             open("mlpmodel3D", "rb")
         )
     bounds = (np.array(quad_X_test.min(axis=1)), np.array(quad_X_test.max(axis=1)))
     ga_inv_value, wlk_inv_value = inversion_3D(bounds, model, quad_Z_test)
     print(wlk_inv_value[0], np.array(quad_X_test)[0])
     print(ga_inv_value[0], np.array(quad_X_test)[0])
-    plot_3D(quadratic, model, quad_X_test, quad_Y_test, quad_Z_test )
+    plot_3D(quadratic, model, quad_X_test, quad_Y_test, quad_Z_test)
     return model, quad_X_test, wlk_inv_value, ga_inv_value
 
 
 def inversion_ga_2D(bounds, model, y_test):
-
-    ga_inv_value = invert_ga_2D(bounds, model, y_test)
-
+    ga_inv_value = invert_MLP_GA_2D(value=y_test, regressor=model, bounds=bounds)
     return ga_inv_value
 
 
@@ -96,7 +94,6 @@ def invert_wlk_2D(bounds, model, y_test):
 
 
 def invert_ga_2D(bounds, model, y_test):
-
     ga_inv_value = invert_MLP_GA_2D(y_test, model, bounds)
     # pickle.dump(
     #     ga_inv_value, open(f"ga_inv_value_2D_{len(ga_inv_value)}", "wb")
@@ -143,7 +140,6 @@ def pipeline_ga_MLP_3D():
 
 
 def pipeline_MLP_2D(num_of_rows):
-
     df = pd.read_csv(f"data/quadratic_{num_of_rows}_2D", index_col=0)
     # df = scale_dataset(df)
     X = df["x"]
@@ -217,6 +213,6 @@ if __name__ == "__main__":
     # model, quad_x, wlk_inv = main_wlk()
     main_ga_2D()
     # main_ga_3D()
-
-    #TODO - kivonni a Z tengelyből a függvényértékeket -> hibák topológiája -> átlag négyzetes hibák ->
+    # TODO refactor, test, early stopping
+    # TODO - kivonni a Z tengelyből a függvényértékeket -> hibák topológiája -> átlag négyzetes hibák ->
     # TODO 2D-ben diagonális vonal  y és y kalap között mennyire diagonális

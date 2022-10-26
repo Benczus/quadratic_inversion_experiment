@@ -1,6 +1,5 @@
 import logging
 import os
-from ast import Str
 
 import inversion
 import numpy as np

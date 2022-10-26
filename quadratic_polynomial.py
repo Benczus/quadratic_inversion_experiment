@@ -31,7 +31,7 @@ class QuadraticPolynomial:
         y = self.calculate(x)
         self.x, self.y = x, y
         self.num_of_rows = num_of_rows
-        return x,y
+        return x, y
 
     def generate_quadratic_data_3D(self, num_of_rows=1000, lower_b=-100, upper_b=100):
         range = upper_b - lower_b
