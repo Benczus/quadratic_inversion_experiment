@@ -24,16 +24,15 @@ def plot_3D(
 def plot_inversion_2D(regressor, inv_value, X, y):
     plt.plot(X["x"], y)
     # tuple((x,y) for x,y in zip(regressor.predict(np.array(inv_value)).reshape(1, -1),(-1)*regressor.predict(np.array(inv_value)).reshape(1, -1)))
-    plt.scatter(
-        inv_value, (a := regressor.predict(np.array(inv_value[0]).reshape(1, -1)), -a)
+    plt.scatter(         x=(inv_value[0],-inv_value[0]), y=(a := regressor.predict(np.array(inv_value[0]).reshape(1, -1)), a)     )
+    if inv_value[0] < 0:
+        inv_value[0] *= (-1)
+    plt.plot(
+        (inv_value[0], -X["x"].iloc[14]), ((regressor.predict(np.array(inv_value)[0].reshape(1, -1))), y.iloc[14]),
     )
     plt.plot(
-        (inv_value[1], X["x"].iloc[0]),
-        (-(regressor.predict(np.array(inv_value)[0].reshape(1, -1))), y.iloc[0]),
-    )
-    plt.plot(
-        (inv_value[0], -X["x"].iloc[0]),
-        ((regressor.predict(np.array(inv_value)[0].reshape(1, -1))), y.iloc[0]),
+        (-inv_value[0], X["x"].iloc[14]),
+        ((regressor.predict(np.array(inv_value)[0].reshape(1, -1))), y.iloc[14]),
     )
     plt.show()
     return
