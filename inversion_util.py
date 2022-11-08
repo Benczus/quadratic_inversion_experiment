@@ -1,10 +1,12 @@
 import logging
 import os
 
+import inversion
 import numpy as np
 import pandas as pd
+from inversion import GAMLPInverter, WLKMLPInverter
 
-import inversion
+import experiment_utils
 from util.util import current_datetime
 
 
@@ -61,31 +63,31 @@ def average_xy_positions(inverted_positions, selected_features):
 
 def invert_MLP_WLK_2D(value, regressor, bounds):
     print("Inverting with WLK!")
-    inverter = inversion.WLKMLPInverter(2, 0.5, regressor, bounds=bounds)
+    inverter = WLKMLPInverter(2, 0.5, regressor, bounds=bounds)
     return inverter.invert(value)
 
 
 def invert_MLP_WLK_3D(value, regressor, bounds):
     print("Inverting with WLK!")
-    inverter = inversion.WLKMLPInverter(800, 0.5, regressor, bounds=bounds)
+    inverter = experiment_utils.WLKMLPInverter(800, 0.5, regressor, bounds=bounds)
     return inverter.invert(value)
 
 
 def invert_MLP_GA_2D(value, regressor, bounds):
     print("Inverting with GA!")
-    inverter = inversion.GAMLPInverter(regressor, bounds)
+    inverter = GAMLPInverter(regressor, bounds)
     return inverter.invert(value)
 
 
 def invert_MLP_GA_3D(value, regressor, bounds):
     print("Inverting with GA!")
-    inverter = inversion.GAMLPInverter(regressor, bounds)
+    inverter = experiment_utils.GAMLPInverter(regressor, bounds)
     return inverter.invert(value)
 
 
 def invert_MLP_3D(inv_type, value, regressor):
     if inv_type == "WLK":
-        inverter = inversion.WLKMLPInverter(
+        inverter = experiment_utils.WLKMLPInverter(
             regressor,
         )
     else:

@@ -1,20 +1,26 @@
+import pickle
+
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
 from ann_training import model_creation_ga_MLP_3D, model_creation_MLP_2D
-from inversion.util import sort_2D_test_data
+from experiment_utils.util import sort_2D_test_data
+from inversion_util import (invert_MLP_GA_2D, invert_MLP_GA_3D,
+                            invert_MLP_WLK_2D, invert_MLP_WLK_3D)
 from quadratic_polynomial import QuadraticPolynomial
 
 
 def pipeline_ga_MLP_3D():
     quadratic = QuadraticPolynomial(1, 1, 2)
     num_of_rows = 400
-    quad_X, quad_Y, quad_Z = quadratic.generate_quadratic_data(num_of_rows=num_of_rows)
+    quad_X, quad_Y, quad_Z = quadratic.generate_quadratic_data_3D(
+        num_of_rows=num_of_rows
+    )
     quadratic.plot_surface()
     X_train = np.append(quad_X, quad_Y, axis=1)
     y_train = quad_Z
-    quad_X_test, quad_Y_test, quad_Z_test = quadratic.generate_quadratic_data(
+    quad_X_test, quad_Y_test, quad_Z_test = quadratic.generate_quadratic_data_3D(
         num_of_rows=num_of_rows
     )
     # input can be only 1 dimensional. 2 sets of inputs -> add new columns
@@ -45,3 +51,31 @@ def pipeline_MLP_2D(num_of_rows):
         neuron_config, activation_config, X_train, X_test, y_train, y_test
     )
     return X_test, model, y_test
+
+
+def inversion_3D(bounds, model, y_test, method="ga", save=False, load=False):
+    inv_value = None
+    if not load:
+        if method.lower() == "ga":
+            inv_value = invert_MLP_GA_3D(y_test[0], model, bounds=bounds)
+        if method.lower() == "wlk":
+            inv_value = invert_MLP_WLK_3D(y_test[0], model, bounds=bounds)
+        if save:
+            pickle.dump((inv_value, y_test[0]), open(f"{method}_inv_value_2D", "wb"))
+    else:
+        inv_value = pickle.load(open("f{method}_inv_value_3D", "rb"))
+    return inv_value
+
+
+def inversion_2D(bounds, model, y_test, method="ga", save=False, load=False):
+    inv_value = None
+    if not load:
+        if method.lower() == "ga":
+            inv_value = invert_MLP_GA_2D(y_test[0], model, bounds=bounds)
+        if method.lower() == "wlk":
+            inv_value = invert_MLP_WLK_2D(y_test[0], model, bounds=bounds)
+        if save:
+            pickle.dump((inv_value, y_test[0]), open(f"{method}_inv_value_2D", "wb"))
+    else:
+        inv_value = pickle.load(open("f{method}_inv_value_3D", "rb"))
+    return inv_value

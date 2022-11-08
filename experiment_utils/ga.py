@@ -6,10 +6,10 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 from ann_training import model_creation_2D, model_creation_3D
-from inversion.general import pipeline_ga_MLP_3D, pipeline_MLP_2D
-from inversion.util import sort_2D_test_data
+from experiment_utils.general import (inversion_3D, pipeline_ga_MLP_3D,
+                                      pipeline_MLP_2D)
+from experiment_utils.util import sort_2D_test_data
 from inversion_util import invert_MLP_GA_2D
-from main import inversion_3D
 from plotting import plot_3D, plot_inversion_2D
 from quadratic_polynomial import QuadraticPolynomial
 
@@ -48,11 +48,10 @@ def main_ga_3D():
             open("mlpmodel3D", "rb")
         )
     bounds = (np.array(quad_X_test.min(axis=1)), np.array(quad_X_test.max(axis=1)))
-    ga_inv_value, wlk_inv_value = inversion_3D(bounds, model, quad_Z_test)
-    print(wlk_inv_value[0], np.array(quad_X_test)[0])
+    ga_inv_value = inversion_3D(bounds, model, quad_Z_test, method="ga")
     print(ga_inv_value[0], np.array(quad_X_test)[0])
     plot_3D(quadratic, model, quad_X_test, quad_Y_test, quad_Z_test)
-    return model, quad_X_test, wlk_inv_value, ga_inv_value
+    return model, quad_X_test, ga_inv_value
 
 
 def inversion_ga_2D(bounds, model, y_test):
@@ -89,11 +88,13 @@ def pipeline_ga_2D():
 def pipeline_ga_3D():
     quadratic = QuadraticPolynomial(1, 1, 2)
     num_of_rows = 200
-    quad_X, quad_Y, quad_Z = quadratic.generate_quadratic_data(num_of_rows=num_of_rows)
+    quad_X, quad_Y, quad_Z = quadratic.generate_quadratic_data_3D(
+        num_of_rows=num_of_rows
+    )
     quadratic.plot_surface()
     X_train = np.append(quad_X, quad_Y, axis=1)
     y_train = quad_Z
-    quad_X_test, quad_Y_test, quad_Z_test = quadratic.generate_quadratic_data(
+    quad_X_test, quad_Y_test, quad_Z_test = quadratic.generate_quadratic_data_3D(
         num_of_rows=num_of_rows
     )
     # input can be only 1 dimensional. 2 sets of inputs -> add new columns
