@@ -50,9 +50,9 @@ class QuadraticPolynomial:
     ):
         df = pd.DataFrame(
             data={
-                "x": self.X.diagonal(),
-                "y": self.Y.diagonal(),
-                "z": self.Z.diagonal(),
+                "x": self.x.diagonal(),
+                "y": self.y.diagonal(),
+                # "z": self.Z.diagonal(),
             }
         )
         df.to_csv(
