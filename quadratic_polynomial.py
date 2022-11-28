@@ -39,11 +39,11 @@ class QuadraticPolynomial:
         y = np.random.rand(num_of_rows, 1) * range + lower_b
         x.sort(axis=0)
         y.sort(axis=0)
-        X, Y = np.meshgrid(x, y)
-        Z = self.calculate(np.sqrt(X ** 2 + Y ** 2))
-        self.X, self.Y, self.Z = X, Y, Z
+        # X, Y = np.meshgrid(x, y)
+        Z = self.calculate(np.sqrt(x ** 2 + y ** 2))
+        self.X, self.Y, self.Z = x, y, Z
         self.num_of_rows = num_of_rows
-        return X, Y, Z
+        return x, y, Z
 
     def save_surface_2D(
         self,

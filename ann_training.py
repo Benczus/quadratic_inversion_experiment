@@ -47,12 +47,8 @@ def create_default_model_3D(
 def get_default_model_MLP_2D(activation_config, neuron_config):
     regressor = MLPRegressor(verbose=True)
     param_grid = {
-        "hidden_layer_sizes": [
-            neuron_config,
-        ],
-        "activation": [
-            "relu",
-        ],
+        "hidden_layer_sizes": [neuron_config],
+        "activation": ["relu", "logistic", "tanh"],
         "solver": ("adam",),
         "learning_rate": ["adaptive"],
     }

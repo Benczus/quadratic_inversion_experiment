@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 from inversion import GAMLPInverter, WLKMLPInverter
 
-import experiment_utils
 from util.util import current_datetime
 
 
@@ -69,7 +68,7 @@ def invert_MLP_WLK_2D(value, regressor, bounds):
 
 def invert_MLP_WLK_3D(value, regressor, bounds):
     print("Inverting with WLK!")
-    inverter = experiment_utils.WLKMLPInverter(800, 0.5, regressor, bounds=bounds)
+    inverter = WLKMLPInverter(800, 0.5, regressor, bounds=bounds)
     return inverter.invert(value)
 
 
@@ -81,15 +80,20 @@ def invert_MLP_GA_2D(value, regressor, bounds):
 
 def invert_MLP_GA_3D(value, regressor, bounds):
     print("Inverting with GA!")
-    inverter = experiment_utils.GAMLPInverter(regressor, bounds)
+    inverter = GAMLPInverter(
+        regressor,
+        bounds,
+    )
     return inverter.invert(value)
 
 
 def invert_MLP_3D(inv_type, value, regressor):
     if inv_type == "WLK":
-        inverter = experiment_utils.WLKMLPInverter(
-            regressor,
-        )
+        pass
+        # inverter = WLKMLPInverter(
+        #
+        # )
+    # TODO
     else:
         inverter = inversion.GAMLPInverter(
             regressor,
