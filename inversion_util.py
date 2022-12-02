@@ -81,8 +81,7 @@ def invert_MLP_GA_2D(value, regressor, bounds):
 def invert_MLP_GA_3D(value, regressor, bounds):
     print("Inverting with GA!")
     inverter = GAMLPInverter(
-        regressor,
-        bounds,
+        regressor, bounds=(bounds[0].max(axis=0), bounds[0].min(axis=0))
     )
     return inverter.invert(value)
 

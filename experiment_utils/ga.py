@@ -10,7 +10,6 @@ from experiment_utils.general import (inversion_3D, pipeline_ga_MLP_3D,
                                       pipeline_MLP_2D)
 from experiment_utils.util import sort_2D_test_data
 from inversion_util import invert_MLP_GA_2D
-from plotting import plot_3D
 from quadratic_polynomial import QuadraticPolynomial
 
 
@@ -47,8 +46,13 @@ def main_ga_3D():
         )
     bounds = (np.array(quad_X_test.min(axis=1)), np.array(quad_X_test.max(axis=1)))
     ga_inv_value = inversion_3D(bounds, model, quad_Z_test, method="ga")
-    print(ga_inv_value, np.array([quad_X_test[0], quad_Y_test[0]]))
-    plot_3D(quadratic, model, quad_X_test, quad_Y_test, quad_Z_test)
+    print(
+        ga_inv_value[0],
+        np.array([quad_X_test[0], quad_Y_test[0]]),
+        model.predict(ga_inv_value[0]),
+        model.predict(np.array([quad_X_test[0], quad_Y_test[0]]).reshape(1, -1)),
+    )
+    # plot_3D(quadratic, model, quad_X_test, quad_Y_test, quad_Z_test)
     return model, quad_X_test, ga_inv_value
 
 
