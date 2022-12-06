@@ -15,7 +15,7 @@ from quadratic_polynomial import QuadraticPolynomial
 
 def main_ga_2D():
     quadratic = QuadraticPolynomial(1, 1, 2)
-    if not os.path.exists("mlpmodel3D"):
+    if not os.path.exists("mlpmodel2D"):
         quadratic, model, X_test, Y_test = pipeline_MLP_2D(quadratic)
         pickle.dump(
             (quadratic, model, X_test, Y_test),
@@ -57,7 +57,7 @@ def main_ga_3D():
 
 
 def inversion_ga_2D(bounds, model, y_test):
-    ga_inv_value = invert_MLP_GA_2D(value=y_test, regressor=model, bounds=bounds)
+    ga_inv_value = invert_MLP_GA_2D(value=y_test[0], regressor=model, bounds=bounds)
     return ga_inv_value
 
 
