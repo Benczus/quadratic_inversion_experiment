@@ -31,8 +31,7 @@ def pipeline_ga_MLP_3D(quadratic: QuadraticPolynomial):
     return quadratic, model, quad_X_test, quad_Y_test, quad_Z_test
 
 
-def pipeline_MLP_2D(quadratic: QuadraticPolynomial):
-    num_of_rows = 400
+def pipeline_MLP_2D(quadratic: QuadraticPolynomial, num_of_rows: int = 100):
     X_train, y_train = quadratic.generate_quadratic_data_2D(num_of_rows=num_of_rows)
     # quadratic.plot_surface()
     X_test, y_test = quadratic.generate_quadratic_data_2D(num_of_rows=num_of_rows)

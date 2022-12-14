@@ -15,18 +15,25 @@ from quadratic_polynomial import QuadraticPolynomial
 
 def main_ga_2D():
     quadratic = QuadraticPolynomial(1, 1, 2)
-    if not os.path.exists("mlpmodel2D"):
-        quadratic, model, X_test, Y_test = pipeline_MLP_2D(quadratic)
+    num_of_rows = 100
+    if not os.path.exists(f"mlpmodel2D_{num_of_rows}"):
+        quadratic, model, X_test, Y_test = pipeline_MLP_2D(
+            quadratic, num_of_rows=num_of_rows
+        )
         pickle.dump(
             (quadratic, model, X_test, Y_test),
             open("mlpmodel2D", "wb"),
         )
     else:
-        quadratic, model, X_test, Y_test = pickle.load(open("mlpmodel2D", "rb"))
+        quadratic, model, X_test, Y_test = pickle.load(
+            open(f"mlpmodel2D_{num_of_rows}", "rb")
+        )
     bounds = (np.array(X_test.min(axis=1)), np.array(X_test.max(axis=1)))
     ga_inv_value = inversion_ga_2D(bounds, model, y_test=Y_test)
     print(ga_inv_value, np.array(X_test[0]))
-    return model, X_test, ga_inv_value
+    with open("inversion_save", "wb+") as f:
+        pickle.dump((model, X_test, Y_test, ga_inv_value), f)
+    return model, X_test, Y_test, ga_inv_value
 
 
 def main_ga_3D():
@@ -57,7 +64,11 @@ def main_ga_3D():
 
 
 def inversion_ga_2D(bounds, model, y_test):
-    ga_inv_value = invert_MLP_GA_2D(value=y_test[0], regressor=model, bounds=bounds)
+    ga_inv_value = []
+    for value in y_test:
+        ga_inv_value.append(
+            invert_MLP_GA_2D(value=value, regressor=model, bounds=bounds)[:10]
+        )
     return ga_inv_value
 
 
