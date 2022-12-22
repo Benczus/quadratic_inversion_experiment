@@ -11,11 +11,11 @@ deap = "*"
 matplotlib = "*"
 sklearn_export = "*"
 tensorflow = "*"
+openpyxl = "*"
 
 [dev-packages]
 pylint = "*"
 coverage = "*"
-
 #[requires]
 #python_version = "3.8"
 
