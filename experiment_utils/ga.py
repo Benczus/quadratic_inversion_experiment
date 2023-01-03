@@ -66,9 +66,8 @@ def main_ga_3D():
 def inversion_ga_2D(bounds, model, y_test):
     ga_inv_value = []
     for value in y_test:
-        ga_inv_value.append(
-            invert_MLP_GA_2D(value=value, regressor=model, bounds=bounds)[:10]
-        )
+        inveted_values = invert_MLP_GA_2D(value=value, regressor=model, bounds=bounds)
+        ga_inv_value.append(inveted_values[:10])
     return ga_inv_value
 
 

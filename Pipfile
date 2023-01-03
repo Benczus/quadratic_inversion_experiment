@@ -12,6 +12,7 @@ matplotlib = "*"
 sklearn_export = "*"
 tensorflow = "*"
 openpyxl = "*"
+seaborn = "*"
 
 [dev-packages]
 pylint = "*"
