@@ -1,25 +1,28 @@
 import os
 from datetime import datetime
+from typing import Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from scipy.optimize import fsolve
+
+from function.Function import Function
 
 
-class Polynomial:
-    def __init__(self, values):
-        self.polynomial = np.polynomial.polynomial.Polynomial(values)
-        print(self.polynomial.coef)
+class Arbitrary_Function(Function):
+    def __init__(self, degree):
+        super().__init__(degree=degree)
+        self.r1 = lambda x, y, z: x**2 + y**2 + z**2 + 8 * x * y * z
+        self.r2 = lambda x, y, z: -1 * z * y
 
-    def calculate(self, x) -> float:
-        print()
-        return np.polynomial.polynomial.polyval(x, self.polynomial.coef)
+    def calculate(self, val_list: Tuple[float, float, float]) -> Tuple[float, float]:
+        x, y, z = val_list
+        return self.r1(x, y, z), self.r2(x, y, z)
 
-    def invert(self, solution):
-        a = np.polynomial.Polynomial(
-            np.polynomial.polynomial.polysub(self.polynomial.coef, (0, 0, solution))
-        )
-        return a.roots()
+    def invert(self, val_list):
+        x, y, z = val_list
+        return fsolve(self.r1, x0=x, args=(y, z)), fsolve(self.r2, x0=x, args=(y, z))
 
     def generate_quadratic_data_2D(self, num_of_rows=1000, lower_b=-100, upper_b=100):
         range = upper_b - lower_b
@@ -95,7 +98,7 @@ class Polynomial:
         print(Z)
         surf = ax.plot_surface(X, Y, Z, linewidth=0, antialiased=True)
         fig.colorbar(surf, shrink=0.5, aspect=5)
-        if not os.path.exists("./plots"):
-            os.mkdir("plots")
+        if not os.path.exists("../plots"):
+            os.mkdir("../plots")
         plt.savefig(f"plots/quadratic_surface{datetime.now()}.pdf")
         plt.show()

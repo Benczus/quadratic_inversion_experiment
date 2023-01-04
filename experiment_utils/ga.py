@@ -9,23 +9,24 @@ from ann_training import model_creation_2D, model_creation_3D
 from experiment_utils.general import (inversion_3D, pipeline_ga_MLP_3D,
                                       pipeline_MLP_2D)
 from experiment_utils.util import sort_2D_test_data
+from function.Function import Function
+from function.Polynomial import Polynomial
 from inversion_util import invert_MLP_GA_2D
-from polynomial import Polynomial
 
 
-def main_ga_2D():
-    quadratic = Polynomial([1, 1, 2])
+def main_ga_2D(function: Function):
+    function
     num_of_rows = 100
     if not os.path.exists(f"mlpmodel2D_{num_of_rows}"):
-        quadratic, model, X_test, Y_test = pipeline_MLP_2D(
-            quadratic, num_of_rows=num_of_rows
+        function, model, X_test, Y_test = pipeline_MLP_2D(
+            function, num_of_rows=num_of_rows
         )
         pickle.dump(
-            (quadratic, model, X_test, Y_test),
+            (function, model, X_test, Y_test),
             open("mlpmodel2D", "wb"),
         )
     else:
-        quadratic, model, X_test, Y_test = pickle.load(
+        function, model, X_test, Y_test = pickle.load(
             open(f"mlpmodel2D_{num_of_rows}", "rb")
         )
     bounds = (np.array(X_test.min(axis=1)), np.array(X_test.max(axis=1)))

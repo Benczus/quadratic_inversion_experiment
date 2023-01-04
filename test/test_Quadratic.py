@@ -3,7 +3,7 @@ import unittest
 
 import numpy as np
 
-from polynomial import Polynomial
+from function.Polynomial import Polynomial
 
 
 class QuadraticFunctionTests(unittest.TestCase):

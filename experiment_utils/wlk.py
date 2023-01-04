@@ -4,9 +4,9 @@ import pickle
 import numpy as np
 
 from experiment_utils.general import pipeline_MLP_2D
+from function.Polynomial import Polynomial
 from inversion_util import invert_MLP_WLK_2D
 from plotting import plot_inversion_2D
-from polynomial import Polynomial
 
 
 def inversion_wlk_2D(bounds, model, y_test):

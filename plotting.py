@@ -2,7 +2,7 @@ import numpy as np
 from keras import Model
 from matplotlib import pyplot as plt
 
-from polynomial import Polynomial
+from function.Polynomial import Polynomial
 
 
 def plot_2D(model, X_test, y_test):

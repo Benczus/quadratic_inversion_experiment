@@ -3,9 +3,9 @@ import pickle
 import numpy as np
 
 from ann_training import model_creation_ga_MLP_3D, model_creation_MLP_2D
+from function.Polynomial import Polynomial
 from inversion_util import (invert_MLP_GA_2D, invert_MLP_GA_3D,
                             invert_MLP_WLK_2D, invert_MLP_WLK_3D)
-from polynomial import Polynomial
 
 
 def pipeline_ga_MLP_3D(quadratic: Polynomial):

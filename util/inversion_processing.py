@@ -6,8 +6,6 @@ import pandas as pd
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from polynomial import Polynomial
-
 
 def save_results_as_excel(df, filename: str = "inversion_results.xlsx"):
     # path = Path(__file__) / "pure_scraping_results"
@@ -24,8 +22,9 @@ def save_results_as_csv(df, filename: str = "inversion_results.csv"):
         df.to_csv(file)
 
 
-def process_inversion_results(model=None, X_test=None, Y_test=None, ga_inv_value=None):
-    quadratic = Polynomial([1, 1, 2])
+def process_inversion_results(
+    model=None, X_test=None, Y_test=None, ga_inv_value=None, function=None
+):
     if not any((model, X_test, Y_test, ga_inv_value)):
         with open("inversion_save", "rb+") as f:
             model, X_test, Y_test, ga_inv_value = pickle.load(f)
@@ -41,14 +40,14 @@ def process_inversion_results(model=None, X_test=None, Y_test=None, ga_inv_value
             best_inversion_predictions.append(
                 best_inversion_prediction := model.predict(g[0])
             )
-            best_inversions_calculations.append(quadratic.calculate(g[0][0]))
+            best_inversions_calculations.append(function.calculate(g[0][0]))
             diffs_true_prediction.append(y - best_inversion_prediction)
-            diffs_true_calculation.append(y - quadratic.calculate(g[0][0]))
+            diffs_true_calculation.append(y - function.calculate(g[0][0]))
             diffs_model_prediction.append(
                 model.predict(x.reshape(-1, 1)) - best_inversion_prediction
             )
             diffs_model_calculation.append(
-                model.predict(x.reshape(-1, 1)) - quadratic.calculate(g[0][0])
+                model.predict(x.reshape(-1, 1)) - function.calculate(g[0][0])
             )
         results_dict = {
             "desired_values": [y[0] for y in Y_test],
