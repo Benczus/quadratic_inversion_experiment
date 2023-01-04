@@ -10,11 +10,11 @@ from experiment_utils.general import (inversion_3D, pipeline_ga_MLP_3D,
                                       pipeline_MLP_2D)
 from experiment_utils.util import sort_2D_test_data
 from inversion_util import invert_MLP_GA_2D
-from quadratic_polynomial import QuadraticPolynomial
+from polynomial import Polynomial
 
 
 def main_ga_2D():
-    quadratic = QuadraticPolynomial(1, 1, 2)
+    quadratic = Polynomial([1, 1, 2])
     num_of_rows = 100
     if not os.path.exists(f"mlpmodel2D_{num_of_rows}"):
         quadratic, model, X_test, Y_test = pipeline_MLP_2D(
@@ -37,7 +37,7 @@ def main_ga_2D():
 
 
 def main_ga_3D():
-    quadratic = QuadraticPolynomial(1, 1, 2)
+    quadratic = Polynomial([1, 1, 2])
     if not os.path.exists("mlpmodel3D"):
 
         quadratic, model, quad_X_test, quad_Y_test, quad_Z_test = pipeline_ga_MLP_3D(
@@ -98,7 +98,7 @@ def pipeline_ga_2D():
 
 
 def pipeline_ga_3D():
-    quadratic = QuadraticPolynomial(1, 1, 2)
+    quadratic = Polynomial([1, 1, 2])
     num_of_rows = 200
     quad_X, quad_Y, quad_Z = quadratic.generate_quadratic_data_3D(
         num_of_rows=num_of_rows

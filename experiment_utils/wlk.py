@@ -6,18 +6,18 @@ import numpy as np
 from experiment_utils.general import pipeline_MLP_2D
 from inversion_util import invert_MLP_WLK_2D
 from plotting import plot_inversion_2D
-from quadratic_polynomial import QuadraticPolynomial
+from polynomial import Polynomial
 
 
 def inversion_wlk_2D(bounds, model, y_test):
-    p = QuadraticPolynomial(4, 1, 2)
+    p = Polynomial([4, 1, 2])
     num_of_rows = 200
     wlk_inv_value = invert_wlk_2D(bounds, model, y_test)
     return wlk_inv_value
 
 
 def main_wlk_2D():
-    p = QuadraticPolynomial(4, 1, 2)
+    p = Polynomial([4, 1, 2])
     num_of_rows = 200
     if not os.path.isfile(os.pardir + f"/data/quadratic_{num_of_rows}.csv"):
         p.generate_quadratic_data_2D(num_of_rows)

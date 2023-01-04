@@ -5,10 +5,10 @@ import numpy as np
 from ann_training import model_creation_ga_MLP_3D, model_creation_MLP_2D
 from inversion_util import (invert_MLP_GA_2D, invert_MLP_GA_3D,
                             invert_MLP_WLK_2D, invert_MLP_WLK_3D)
-from quadratic_polynomial import QuadraticPolynomial
+from polynomial import Polynomial
 
 
-def pipeline_ga_MLP_3D(quadratic: QuadraticPolynomial):
+def pipeline_ga_MLP_3D(quadratic: Polynomial):
     num_of_rows = 400
     quad_X, quad_Y, quad_Z = quadratic.generate_quadratic_data_3D(
         num_of_rows=num_of_rows
@@ -31,7 +31,7 @@ def pipeline_ga_MLP_3D(quadratic: QuadraticPolynomial):
     return quadratic, model, quad_X_test, quad_Y_test, quad_Z_test
 
 
-def pipeline_MLP_2D(quadratic: QuadraticPolynomial, num_of_rows: int = 100):
+def pipeline_MLP_2D(quadratic: Polynomial, num_of_rows: int = 100):
     X_train, y_train = quadratic.generate_quadratic_data_2D(num_of_rows=num_of_rows)
     # quadratic.plot_surface()
     X_test, y_test = quadratic.generate_quadratic_data_2D(num_of_rows=num_of_rows)

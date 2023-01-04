@@ -6,11 +6,9 @@ import numpy as np
 import pandas as pd
 
 
-class QuadraticPolynomial:
-    def __init__(self, quadratic, linear, constant):
-        self.polynomial = np.polynomial.polynomial.Polynomial(
-            [constant, linear, quadratic]
-        )
+class Polynomial:
+    def __init__(self, values):
+        self.polynomial = np.polynomial.polynomial.Polynomial(values)
         print(self.polynomial.coef)
 
     def calculate(self, x) -> float:

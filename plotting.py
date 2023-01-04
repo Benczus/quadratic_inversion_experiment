@@ -2,7 +2,7 @@ import numpy as np
 from keras import Model
 from matplotlib import pyplot as plt
 
-from quadratic_polynomial import QuadraticPolynomial
+from polynomial import Polynomial
 
 
 def plot_2D(model, X_test, y_test):
@@ -12,9 +12,7 @@ def plot_2D(model, X_test, y_test):
     plt.show()
 
 
-def plot_3D(
-    quadratic: QuadraticPolynomial, model: Model, quad_X_test, quad_Y_test, quad_Z_test
-):
+def plot_3D(quadratic: Polynomial, model: Model, quad_X_test, quad_Y_test, quad_Z_test):
     # quadratic.plot_surface(quad_X_test, quad_Y_test,  quad_Z_test)
     X_test = np.append(quad_X_test, quad_Y_test, axis=1)
     # quadratic.plot_surface(quad_X_test, quad_Y_test, model.predict(X_test))

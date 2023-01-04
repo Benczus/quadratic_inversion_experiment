@@ -6,7 +6,7 @@ import pandas as pd
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from quadratic_polynomial import QuadraticPolynomial
+from polynomial import Polynomial
 
 
 def save_results_as_excel(df, filename: str = "inversion_results.xlsx"):
@@ -25,7 +25,7 @@ def save_results_as_csv(df, filename: str = "inversion_results.csv"):
 
 
 def process_inversion_results(model=None, X_test=None, Y_test=None, ga_inv_value=None):
-    quadratic = QuadraticPolynomial(1, 1, 2)
+    quadratic = Polynomial([1, 1, 2])
     if not any((model, X_test, Y_test, ga_inv_value)):
         with open("inversion_save", "rb+") as f:
             model, X_test, Y_test, ga_inv_value = pickle.load(f)
