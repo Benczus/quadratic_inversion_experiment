@@ -44,10 +44,10 @@ def process_inversion_results(
             diffs_true_prediction.append(y - best_inversion_prediction)
             diffs_true_calculation.append(y - function.calculate(g[0][0]))
             diffs_model_prediction.append(
-                model.predict(x.reshape(-1, 1)) - best_inversion_prediction
+                model.predict(x.reshape(1, -1)) - best_inversion_prediction
             )
             diffs_model_calculation.append(
-                model.predict(x.reshape(-1, 1)) - function.calculate(g[0][0])
+                model.predict(x.reshape(1, -1)) - function.calculate(g[0][0])
             )
         results_dict = {
             "desired_values": [y[0] for y in Y_test],

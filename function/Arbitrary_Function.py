@@ -13,7 +13,7 @@ from function.Function import Function
 class Arbitrary_Function(Function):
     def __init__(self, degree):
         super().__init__(degree=degree)
-        self.r1 = lambda x, y, z: x**2 + y**2 + z**2 + 8 * x * y * z
+        self.r1 = lambda x, y, z: x ** 2 + y ** 2 + z ** 2 + 8 * x * y * z
         self.r2 = lambda x, y, z: -1 * z * y
 
     def calculate(self, val_list: Tuple[float, float, float]) -> Tuple[float, float]:
@@ -26,10 +26,18 @@ class Arbitrary_Function(Function):
 
     def generate_quadratic_data_2D(self, num_of_rows=1000, lower_b=-100, upper_b=100):
         range = upper_b - lower_b
-        x = np.random.rand(num_of_rows, 1) * range + lower_b
+        x = np.array(
+            (
+                np.random.rand(num_of_rows, 1) * range + lower_b,
+                np.random.rand(num_of_rows, 1) * range + lower_b,
+                np.random.rand(num_of_rows, 1) * range + lower_b,
+            )
+        )
         x.sort(axis=0)
         # X, Y = np.meshgrid(x, y)
-        y = self.calculate(x)
+        y = np.array(self.calculate(x))
+        x = x.reshape(x.shape[1], x.shape[0])
+        y = y.reshape(y.shape[1], y.shape[0])
         self.x, self.y = x, y
         self.num_of_rows = num_of_rows
         return x, y
@@ -41,7 +49,7 @@ class Arbitrary_Function(Function):
         x.sort(axis=0)
         y.sort(axis=0)
         # X, Y = np.meshgrid(x, y)
-        Z = self.calculate(np.sqrt(x**2 + y**2))
+        Z = self.calculate(np.sqrt(x ** 2 + y ** 2))
         self.X, self.Y, self.Z = x, y, Z
         self.num_of_rows = num_of_rows
         return x, y, Z

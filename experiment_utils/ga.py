@@ -15,20 +15,17 @@ from inversion_util import invert_MLP_GA_2D
 
 
 def main_ga_2D(function: Function):
-    function
     num_of_rows = 100
     if not os.path.exists(f"mlpmodel2D_{num_of_rows}"):
         function, model, X_test, Y_test = pipeline_MLP_2D(
             function, num_of_rows=num_of_rows
         )
         pickle.dump(
-            (function, model, X_test, Y_test),
+            (model, X_test, Y_test),
             open("mlpmodel2D", "wb"),
         )
     else:
-        function, model, X_test, Y_test = pickle.load(
-            open(f"mlpmodel2D_{num_of_rows}", "rb")
-        )
+        model, X_test, Y_test = pickle.load(open(f"mlpmodel2D_{num_of_rows}", "rb"))
     bounds = (np.array(X_test.min(axis=1)), np.array(X_test.max(axis=1)))
     ga_inv_value = inversion_ga_2D(bounds, model, y_test=Y_test)
     print(ga_inv_value, np.array(X_test[0]))

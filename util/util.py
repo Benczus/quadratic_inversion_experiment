@@ -60,7 +60,7 @@ def __calculate_spherical_coordinates(dataset):
 
 def calculate_spherical_coordinates(x, y, z):
     util_logger.info("Started invert_all method")
-    r = x**2 + y**2 + z**2
+    r = x ** 2 + y ** 2 + z ** 2
     r = np.sqrt(r)
     if r is not 0:
         tetha = y / r
