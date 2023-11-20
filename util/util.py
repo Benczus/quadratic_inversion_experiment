@@ -45,9 +45,9 @@ util_logger = setup_logger(
 def __calculate_spherical_coordinates(dataset):
     util_logger.info("Started invert_all method")
     r = (
-        dataset["Position X"] ** 2
-        + dataset["Position Y"] ** 2
-        + dataset["Position Z"] ** 2
+            dataset["Position X"] ** 2
+            + dataset["Position Y"] ** 2
+            + dataset["Position Z"] ** 2
     )
     r = np.sqrt(r)
     tetha = dataset["Position Y"] / r
@@ -60,7 +60,7 @@ def __calculate_spherical_coordinates(dataset):
 
 def calculate_spherical_coordinates(x, y, z):
     util_logger.info("Started invert_all method")
-    r = x**2 + y**2 + z**2
+    r = x ** 2 + y ** 2 + z ** 2
     r = np.sqrt(r)
     if r is not 0:
         tetha = y / r
@@ -114,7 +114,7 @@ def transform_data(dataset):
     selected_features.insert(0, "pos_x", dataset["Position X"])
     selected_features.insert(1, "pos_y", dataset["Position Y"])
     selected_features.insert(2, "pos_z", dataset["Position Z"])
-    selected_features[selected_features.pos_z != 0]
+    # selected_features[selected_features.pos_z != 0]
     synthetic_features = create_synthetic_features(dataset)
     selected_features.insert(3, "x_y", synthetic_features["x_y"])
     selected_features.insert(4, "x_y_z", synthetic_features["x_y_z"])

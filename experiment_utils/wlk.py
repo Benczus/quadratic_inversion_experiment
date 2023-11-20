@@ -5,7 +5,7 @@ import numpy as np
 
 from experiment_utils.general import pipeline_MLP_2D
 from function.Polynomial import Polynomial
-from inversion_util import invert_MLP_WLK_2D
+from inversion_util import invert_mlp_wlk_2_d
 from plotting import plot_inversion_2D
 
 
@@ -23,7 +23,7 @@ def main_wlk_2D():
         p.generate_quadratic_data_2D(num_of_rows)
         p.save_surface_2D()
     if not os.path.exists("mlpmodel2D"):
-        X_test, model, y_test = pipeline_MLP_2D(num_of_rows)
+        X_test, model, y_test = pipeline_MLP_2D(p, num_of_rows)
         pickle.dump((X_test, model, y_test), open("mlpmodel2D", "wb"))
     else:
         X_test, model, y_test = pickle.load(open("mlpmodel2D", "rb"))
@@ -34,5 +34,5 @@ def main_wlk_2D():
 
 
 def invert_wlk_2D(bounds, model, y_test):
-    ga_inv_value, wlk_inv_value = invert_MLP_WLK_2D(bounds, model, y_test)
+    ga_inv_value, wlk_inv_value = invert_mlp_wlk_2_d(bounds, model, y_test)
     return ga_inv_value, wlk_inv_value

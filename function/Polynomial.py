@@ -43,13 +43,13 @@ class Polynomial(Function):
         x.sort(axis=0)
         y.sort(axis=0)
         # X, Y = np.meshgrid(x, y)
-        Z = self.calculate(np.sqrt(x**2 + y**2))
+        Z = self.calculate(np.sqrt(x ** 2 + y ** 2))
         self.X, self.Y, self.Z = x, y, Z
         self.num_of_rows = num_of_rows
         return x, y, Z
 
     def save_surface_2D(
-        self,
+            self,
     ):
         df = pd.DataFrame(
             data={
@@ -64,7 +64,7 @@ class Polynomial(Function):
         )
 
     def save_data_2D(
-        self,
+            self,
     ):
         df = pd.DataFrame(
             data={
@@ -78,7 +78,7 @@ class Polynomial(Function):
         )
 
     def save_surface_3D(
-        self,
+            self,
     ):
         df = pd.DataFrame(
             data={

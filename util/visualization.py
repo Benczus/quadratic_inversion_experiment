@@ -17,7 +17,7 @@ vis_logger = setup_logger(
 
 
 def plot_inverted(
-    dataset, dataset_unscaled, dataset_inverted, DESIRED_OUTPUT, OUTPUT_TOLERANCE
+        dataset, dataset_unscaled, dataset_inverted, DESIRED_OUTPUT, OUTPUT_TOLERANCE
 ):
     vis_logger.info("Started plot_inverted method")
     dataset_original = dataset_unscaled.copy().values.tolist()
@@ -39,14 +39,14 @@ def plot_inverted(
         values[0]
         for values in dataset_original
         if values[8] > DESIRED_OUTPUT - OUTPUT_TOLERANCE
-        and values[8] < DESIRED_OUTPUT + OUTPUT_TOLERANCE
+           and values[8] < DESIRED_OUTPUT + OUTPUT_TOLERANCE
     ]
     # y axis value list.
     y_number_list = [
         values[1]
         for values in dataset_original
         if values[8] > DESIRED_OUTPUT - OUTPUT_TOLERANCE
-        and values[8] < DESIRED_OUTPUT + OUTPUT_TOLERANCE
+           and values[8] < DESIRED_OUTPUT + OUTPUT_TOLERANCE
     ]
     # Draw point based on above x, y axis values.
     ax2.scatter(x_number_list, y_number_list)

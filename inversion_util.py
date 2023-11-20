@@ -1,7 +1,6 @@
 import logging
 import os
 
-import inversion
 import numpy as np
 import pandas as pd
 from inversion import GAMLPInverter, WLKMLPInverter
@@ -60,19 +59,19 @@ def average_xy_positions(inverted_positions, selected_features):
     )
 
 
-def invert_MLP_WLK_2D(value, regressor, bounds):
+def invert_mlp_wlk_2_d(value, regressor, bounds):
     print("Inverting with WLK!")
     inverter = WLKMLPInverter(2, 0.5, regressor, bounds=bounds)
     return inverter.invert(value)
 
 
-def invert_MLP_WLK_3D(value, regressor, bounds):
+def invert_mlp_wlk_3_d(value, regressor, bounds):
     print("Inverting with WLK!")
     inverter = WLKMLPInverter(800, 0.5, regressor, bounds=bounds)
     return inverter.invert(value)
 
 
-def invert_MLP_GA_2D(value, regressor, bounds):
+def invert_mlp_ga_2_d(value, regressor, bounds):
     print("Inverting with GA!")
     inverter = GAMLPInverter(
         regressor, bounds=(bounds[0].max(axis=0), bounds[0].min(axis=0))
@@ -80,23 +79,10 @@ def invert_MLP_GA_2D(value, regressor, bounds):
     return inverter.invert(value)
 
 
-def invert_MLP_GA_3D(value, regressor, bounds):
+def invert_mlp_ga_3_d(value, regressor, bounds):
     print("Inverting with GA!")
     inverter = GAMLPInverter(
         regressor, bounds=(bounds[0].max(axis=0), bounds[0].min(axis=0))
     )
     return inverter.invert(value)
 
-
-def invert_MLP_3D(inv_type, value, regressor):
-    if inv_type == "WLK":
-        pass
-        # inverter = WLKMLPInverter(
-        #
-        # )
-    # TODO
-    else:
-        inverter = inversion.GAMLPInverter(
-            regressor,
-        )
-    return inverter.invert(value)
