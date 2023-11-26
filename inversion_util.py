@@ -85,4 +85,3 @@ def invert_mlp_ga_3_d(value, regressor, bounds):
         regressor, bounds=(bounds[0].max(axis=0), bounds[0].min(axis=0))
     )
     return inverter.invert(value)
-

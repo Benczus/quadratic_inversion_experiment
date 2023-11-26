@@ -23,4 +23,4 @@ coverage = "*"
 
 [packages.anninverter]
 git = "https://github.com/Benczus/inversion_api"
-#editable = true
+editable = true

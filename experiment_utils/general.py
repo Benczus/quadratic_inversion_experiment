@@ -12,7 +12,7 @@ def pipeline_ga_MLP_3D(function: Polynomial, num_of_rows: int = 100):
     quad_X, quad_Y, quad_Z = function.generate_quadratic_data_3D(
         num_of_rows=num_of_rows
     )
-    function.plot_surface()
+    # function.plot_surface()
     X_train = np.append(quad_X, quad_Y, axis=1)
     y_train = quad_Z
     quad_X_test, quad_Y_test, quad_Z_test = function.generate_quadratic_data_3D(

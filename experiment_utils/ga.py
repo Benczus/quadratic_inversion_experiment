@@ -20,7 +20,7 @@ def main_ga_2_d(function: Polynomial, num_of_rows=100):
         )
         pickle.dump(
             (function_return, model, x_test, y_test),
-            open("mlpmodel2D", "wb"),
+            open("mlpmodel2D_{num_of_rows}", "wb"),
         )
     else:
         function_return, model, x_test, y_test = pickle.load(
@@ -58,7 +58,7 @@ def main_ga_3_d(function: Polynomial, num_of_rows=100):
         with open(f"inversion_save3D_{num_of_rows}", "wb+") as f:
             pickle.dump((model, quad_x_test, quad_y_test, quad_z_test, ga_inv_value), f)
     else:
-        with open(f"inversion_save_{num_of_rows}", "rb") as f:
+        with open(f"inversion_save3D_{num_of_rows}", "rb") as f:
             model, quad_x_test, quad_y_test, quad_z_test, ga_inv_value = pickle.load(f)
     # plot_3D(quadratic, model, quad_X_test, quad_Y_test, quad_Z_test)
     return model, quad_x_test, quad_y_test, quad_z_test, ga_inv_value
