@@ -39,18 +39,18 @@ def main_ga_2_d(function: Polynomial, num_of_rows=100):
 
 
 def main_ga_3_d(function: Polynomial, num_of_rows=100):
-    if not os.path.exists("mlpmodel3D"):
+    if not os.path.exists(f"mlpmodel3D_{num_of_rows}"):
 
         quadratic, model, quad_x_test, quad_y_test, quad_z_test = pipeline_ga_MLP_3D(
             function=function, num_of_rows=num_of_rows
         )
         pickle.dump(
             (quadratic, model, quad_x_test, quad_y_test, quad_z_test),
-            open("mlpmodel3D", "wb"),
+            open(f"mlpmodel3D_{num_of_rows}", "wb"),
         )
     else:
         quadratic, model, quad_x_test, quad_y_test, quad_z_test = pickle.load(
-            open("mlpmodel3D", "rb")
+            open(f"mlpmodel3D_{num_of_rows}", "rb")
         )
     if not os.path.exists(f"inversion_save3D_{num_of_rows}"):
         bounds = (np.array(quad_x_test.min(axis=1)), np.array(quad_x_test.max(axis=1)))

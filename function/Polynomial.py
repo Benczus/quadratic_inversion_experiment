@@ -102,5 +102,5 @@ class Polynomial(Function):
         fig.colorbar(surf, shrink=0.5, aspect=5)
         if not os.path.exists("../plots"):
             os.mkdir("../plots")
-        plt.savefig(f"plots/quadratic_surface{datetime.now()}.pdf")
+        plt.savefig(f"../plots/quadratic_surface{datetime.now()}.pdf")
         plt.show()
