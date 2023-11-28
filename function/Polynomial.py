@@ -98,6 +98,8 @@ class Polynomial(Function):
         Y = self.Y if Y is None else Y
         Z = self.Z if Z is None else Z
         print(Z)
+        # 3D plotting
+        # mesh_X, mesh_Y = np.meshgrid(X, Y)
         surf = ax.plot_surface(X, Y, Z, linewidth=0, antialiased=True)
         fig.colorbar(surf, shrink=0.5, aspect=5)
         if not os.path.exists("../plots"):

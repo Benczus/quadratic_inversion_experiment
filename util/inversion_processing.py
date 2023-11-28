@@ -69,6 +69,7 @@ def process_inversion_results_2_d(
         if not os.path.exists(plots_path):
             os.makedirs(plots_path)
         save_ecdf_plots(normalized_df, path=str(plots_path))
+        function.plot_surface(x_test, y_test, diffs_model_prediction)
         save_results_as_csv(results_df)
         save_results_as_excel(results_df)
 
@@ -137,7 +138,7 @@ def process_inversion_results_3_d(
     if not os.path.exists(plots_path):
         os.makedirs(plots_path)
     save_ecdf_plots(normalized_df, path=str(plots_path))
-    inv_function.plot_surface(x_test, y_test, diffs_model_prediction)
+    # diff plot here!
     plot_3_surface(normalized_df, )
     save_results_as_csv(results_df)
     save_results_as_excel(results_df)
