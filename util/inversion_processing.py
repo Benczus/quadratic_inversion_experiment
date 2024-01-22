@@ -69,7 +69,6 @@ def process_inversion_results_2_d(
         if not os.path.exists(plots_path):
             os.makedirs(plots_path)
         save_ecdf_plots(normalized_df, path=str(plots_path))
-        function.plot_surface(x_test, y_test, diffs_model_prediction)
         save_results_as_csv(results_df)
         save_results_as_excel(results_df)
 
@@ -86,6 +85,13 @@ def plot_3_surface(normalized_df: pd.DataFrame):
     fig.colorbar(surf, shrink=0.5, aspect=5)
     plt.savefig("3D_surface")
     plt.close()
+
+
+def plot_2d_surface(normalized_df: pd.DataFrame):
+    sns.lineplot(x=normalized_df['desired_values'], y=normalized_df['inverted_output'])
+    plt.savefig("2D_surface")
+    plt.close()
+
 
 
 

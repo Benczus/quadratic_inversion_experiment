@@ -20,7 +20,7 @@ def main_ga_2_d(function: Polynomial, num_of_rows=100):
         )
         pickle.dump(
             (function_return, model, x_test, y_test),
-            open("mlpmodel2D_{num_of_rows}", "wb"),
+            open(f"mlpmodel2D_{num_of_rows}", "wb"),
         )
     else:
         function_return, model, x_test, y_test = pickle.load(
@@ -66,7 +66,7 @@ def main_ga_3_d(function: Polynomial, num_of_rows=100):
 
 def inversion_ga_2_d(bounds, model, y_test):
     ga_inv_value = []
-    for value in y_test:
+    for index, value in enumerate(y_test):
         inveted_values = invert_mlp_ga_2_d(value=value, regressor=model, bounds=bounds)
         ga_inv_value.append(inveted_values[:10])
     return ga_inv_value

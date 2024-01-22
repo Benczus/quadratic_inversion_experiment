@@ -9,7 +9,7 @@ logger = logging.getLogger("exp_logger")
 if __name__ == "__main__":
     quadratic = Polynomial([1, 1, 2])
 
-    num_of_rows = 10
+    num_of_rows = 100
     # model, quad_x_test, quad_y_test, quad_z_test, ga_inv_value = main_ga_3_d(function=quadratic,
     #                                                                          num_of_rows=num_of_rows)
     # process_inversion_results_3_d(model=model, x_test=quad_x_test, y_test=quad_y_test, z_test=quad_z_test,
